@@ -1,18 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-// contract ElectionsFactory {
-//     address[] public electionContracts;
 
-//     function createElection() public {
-//         address newElection = address(msg.sender);
-//         electionContracts.push(newElection);
-//     }
-
-//     function getElectionContracts() public view returns (address[] memory) {
-//         return electionContracts;
-//     }
-// }
 contract Elections {
 
     address owner = msg.sender;
@@ -23,6 +12,7 @@ contract Elections {
         string party;
         uint voteCount;
     }
+    
    
    Candidate [] public candidate;
    uint candidateCount;
@@ -113,4 +103,20 @@ contract Elections {
     
     
 }
+contract ElectionsFactory {
+    Elections[] public electionContracts;
 
+    function createElection() public {
+        Elections newElection = new Elections();
+        electionContracts.push(newElection);
+    }
+
+    function getElectionCount() public view returns (uint) {
+        return electionContracts.length;
+    }
+
+    function getElection(uint _index) public view returns (Elections) {
+        require(_index < electionContracts.length, "Index out of bounds");
+        return electionContracts[_index];
+    }
+}
